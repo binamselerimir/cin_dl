@@ -6,7 +6,7 @@ on:
     - cron: "0 3 * * *"  # daily at 03:00 UTC
 
 permissions:
-  contents: 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  # needed to push commits via GITHUB_TOKEN
+  contents: write  # needed to push commits via GITHUB_TOKEN
 
 jobs:
   download-and-commit:

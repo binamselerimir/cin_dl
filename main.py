@@ -129,7 +129,7 @@ def download_http(url, out_dir, idx, session):
                 if chunk:
                     f.write(chunk)
         return path
-        except Exception:
+    except Exception:
         return None
 def main():
     if len(sys.argv) < 2:

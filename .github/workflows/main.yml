@@ -34,7 +34,7 @@ jobs:
           # Example: pass args/env if your script needs them
           # export TARGET_URL="https://example.com"
           # export OUTPUT_DIR="downloaded_images"
-          python main.py https://cin.red/v/595232
+          python main.py https://cin.red/v/595232 hi
 
       - name: Commit and push changes (if any)
         run: |

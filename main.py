@@ -5,6 +5,15 @@ import re
 from playwright.async_api import async_playwright
 
 
+#TODO
+# exctract all pure link from json format 
+# curl download all link
+
+#TODO for best
+# create loop when id input code show me thum and y/n to download
+
+
+
 # i dont know why used async, the docs say use and i use
 async def runs():
     print("hi")
@@ -13,14 +22,34 @@ async def runs():
         browser_headless = await p.chromium.launch(executable_path='../Downloads/chrome-linux64/chrome',headless = True, proxy={'server':'http://127.0.0.1:8085'})
         page_headless = await browser_headless.new_page()
         
-        await page_headless.goto('https://cin.red/')
+        await page_headless.goto('https://cin.red/v/649127')
         
         await page_headless.mouse.wheel(0,1000)
         print("page title: ",await page_headless.title())
         
+        
+        last_scrolled_position = 0
+        no_move_count = 0 
+        
+        while True:
+            current_h = await page_headless.evaluate("window.pageYOffset + window.innerHeight")
+            await page_headless.evaluate("window.scrollBy(0, 1500)")
+
+            new_h = await page_headless.evaluate("window.pageYOffset + window.innerHeight")
+            if new_h == current_h:
+                no_move_count += 1
+            else:
+                no_move_count = 0
+                print("is scrolling...", new_h)
+
+            if no_move_count == 3:
+                print("is end")
+                break
+            await asyncio.sleep(.2)
+        
         await page_headless.screenshot(path="re.png")
         print("save screenshot 're.png'")
-        
+
         await browser_headless.close()
 
 def curl_request(url):
@@ -38,7 +67,7 @@ def extract_link(data):
     
     return matches
 
-response = curl_request('https://cin.red/v/649118')
+response = curl_request('https://cin.red/v/649127')
 
 pack = extract_link(response)
 

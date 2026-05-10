@@ -1,6 +1,7 @@
 import subprocess
 import json
 import asyncio
+import re
 from playwright.async_api import async_playwright
 
 
@@ -15,7 +16,7 @@ async def runs():
         await page_headless.goto('https://cin.red/')
         
         await page_headless.mouse.wheel(0,1000)
-        print("page title: ",await age_headless.title())
+        print("page title: ",await page_headless.title())
         
         await page_headless.screenshot(path="re.png")
         print("save screenshot 're.png'")
@@ -30,7 +31,24 @@ def curl_request(url):
     
     return result.stdout
 
-response = curl_request('https://cin.red/v/236851')
+def extract_link(data):
+    pattern = r'\{"t":.[^{}]*"h":....?\}?'
+    
+    matches = re.findall(pattern, data, re.DOTALL)
+    
+    return matches
+
+response = curl_request('https://cin.red/v/649118')
+
+pack = extract_link(response)
+
+
+print(*pack, sep="\n")
 
 asyncio.run(runs())
-print(response)
+
+
+
+
+
+

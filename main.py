@@ -2,11 +2,11 @@ import subprocess
 import json
 import asyncio
 import re
+import ast
 from playwright.async_api import async_playwright
 
 
 #TODO
-# exctract all pure link from json format 
 # curl download all link
 
 #TODO for best
@@ -67,14 +67,32 @@ def extract_link(data):
     
     return matches
 
+def pure_link(data):
+    finall = []
+    for d in data:
+        temp = ast.literal_eval(d.replace("}}", "}"))
+        finall.append(temp.get("t"))
+    return finall
+
+def curl_dl(links):
+    
+    for i in links:
+        command = ['curl', '--proxy','http://127.0.0.1:8085','-O', i]
+        result = subprocess.run(command, capture_output=True, text=True)
+        print(result)
+
+
 response = curl_request('https://cin.red/v/649127')
 
 pack = extract_link(response)
 
+link = pure_link(pack)
 
-print(*pack, sep="\n")
+print(*link, sep="\n")
 
 asyncio.run(runs())
+
+curl_dl(link)
 
 
 

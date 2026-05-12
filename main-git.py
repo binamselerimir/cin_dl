@@ -99,7 +99,7 @@ link = pure_link(pack)
 
 print(*link, sep="\n")
 
-asyncio.run(runs(code, args.arg2))
+asyncio.run(runs(args.arg1, args.arg2))
 
 curl_dl(link)
 

@@ -10,7 +10,7 @@ on:
       my_boolean:
         description: 'Boolean flag'
         required: true
-        default: 'flase'
+        default: 'Flase'
         type: boolean
 jobs:
   run-app:
@@ -30,7 +30,7 @@ jobs:
         playwright install chormium
     - name: Run CIN DL script
       run: |
-        python main.py ${{ github.event.inputs.my_number }} ${{ github.event.inputs.my_boolean }}
+        python main-git.py ${{ github.event.inputs.my_number }} ${{ github.event.inputs.my_boolean }}
     - name: Commit and Push downloaded files
       run: |
         env:

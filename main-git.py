@@ -1,5 +1,5 @@
 import subprocess
-import json
+import argparse
 import asyncio
 import re
 import ast
@@ -15,7 +15,7 @@ from playwright.async_api import async_playwright
 async def runs(code ,firstscreen):
     async with async_playwright() as p:
         print("run headless...")
-        browser_headless = await p.chromium.launch(executable_path='../Downloads/chrome-linux64/chrome',headless = True, proxy={'server':'http://127.0.0.1:8085'})
+        browser_headless = await p.chromium.launch(headless = True)
         page_headless = await browser_headless.new_page()
         
         await page_headless.goto('https://cin.red/v/'+code)
@@ -56,7 +56,7 @@ async def runs(code ,firstscreen):
 
 def curl_request(url):
     
-    command = ['curl', '--proxy','http://127.0.0.1:8085', url]
+    command = ['curl', url]
 
     result = subprocess.run(command, capture_output=True, text=True)
     
@@ -79,31 +79,29 @@ def pure_link(data):
 def curl_dl(links):
     
     for i in links:
-        command = ['curl', '--proxy','http://127.0.0.1:8085','-O', i]
+        command = ['curl','-O', i]
         result = subprocess.run(command, capture_output=True, text=True)
         print(result)
 
-while True:
 
-    code = input("Enter rhe code >>> ")
-    if code == "q":
-        break
-    else:
-        asyncio.run(runs(code, True))
-        check = input("You want Download? [Y/N]")
-        if check.lower() == "y" or "":
-            response = curl_request('https://cin.red/v/'+code)
 
-            pack = extract_link(response)
 
-            link = pure_link(pack)
 
-            print(*link, sep="\n")
+parser = argparse.ArgumentParser()
+parser.add_argument("arg1", type=str, help="First argument")
+parser.add_argument("arg2", type=bool, help="Second argument")
+args = parser.parse_args()
+asyncio.run(runs(code, True))
+if check.lower() == "y" or "":
+response = curl_request('https://cin.red/v/'+args.arg1)
 
-            asyncio.run(runs(code, False))
+pack = extract_link(response)
 
-            curl_dl(link)
-        elif check.lower() == "n":
-            continue
-        else:
-            print("[y or n]")
+link = pure_link(pack)
+
+print(*link, sep="\n")
+
+asyncio.run(runs(code, args.arg2))
+
+curl_dl(link)
+

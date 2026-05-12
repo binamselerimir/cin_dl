@@ -10,11 +10,14 @@ on:
       my_boolean:
         description: 'Boolean flag'
         required: true
-        default: 'Flase'
+        default: 'False'
         type: boolean
 jobs:
   run-app:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -32,9 +35,9 @@ jobs:
       run: |
         python main-git.py ${{ github.event.inputs.my_number }} ${{ github.event.inputs.my_boolean }}
     - name: Commit and Push downloaded files
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
         git add . 

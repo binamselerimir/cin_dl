@@ -91,8 +91,6 @@ parser = argparse.ArgumentParser()
 parser.add_argument("arg1", type=str, help="First argument")
 parser.add_argument("arg2", type=bool, help="Second argument")
 args = parser.parse_args()
-asyncio.run(runs(code, True))
-if check.lower() == "y" or "":
 response = curl_request('https://cin.red/v/'+args.arg1)
 
 pack = extract_link(response)

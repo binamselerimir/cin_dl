@@ -20,7 +20,7 @@ async def runs(code ,firstscreen):
         
         await page_headless.goto('https://cin.red/v/'+code)
 
-        if firstscreen:
+        if !firstscreen:
 
             await asyncio.sleep(2)
             

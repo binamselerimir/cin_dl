@@ -1,13 +1,8 @@
 import subprocess
-import json
 import asyncio
 import re
 import ast
 from playwright.async_api import async_playwright
-
-
-#TODO for best
-# create loop when id input code show me thum and y/n to download
 
 
 
@@ -20,7 +15,7 @@ async def runs(code ,firstscreen):
         
         await page_headless.goto('https://cin.red/v/'+code)
 
-        if firstscreen == False:
+        if firstscreen:
 
             await asyncio.sleep(2)
             
